@@ -3,32 +3,241 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Apna Khata · Ikram Arshad</title>
-<meta name="description" content="Apna Khata: a simple, private daily khata for expenses, cash and udhaar. Offline, no account.">
-<link rel="icon" href="apna-khata-icon.png">
-<link rel="stylesheet" href="style.css">
+<title>Apna Khata: Expense &amp; Udhaar</title>
+<meta name="description" content="Apna Khata is a simple, private daily khata for expenses, cash and udhaar. English, Roman Urdu and Urdu. Offline, no account, records stay on your phone.">
+<meta property="og:title" content="Apna Khata: Expense &amp; Udhaar">
+<meta property="og:description" content="Your daily money book for Android. Offline, no account, records stay on your phone.">
+<meta property="og:image" content="https://ikramarshad.github.io/img/og.jpg">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#8f1d17">
+<link rel="icon" href="img/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Noto+Nastaliq+Urdu:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f1e4;--paper-2:#efe6d3;--ink:#1f1b16;--muted:#6a6052;--rule:#e2d6bf;
+  --red:#8f1d17;--red-ink:#b3261e;--card:#fffdf8;--slate:#1d2a24;--chalk:#f4efe2;
+  --serif:"Fraunces",Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#16130f;--paper-2:#1e1a15;--ink:#f2ece3;--muted:#b3a794;--rule:#352e25;
+  --red:#a8261d;--red-ink:#ff8a80;--card:#211c17;--slate:#121c18;
+}}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--red-ink)}
+.wrap{max-width:1080px;margin:0 auto;padding:0 20px}
+h1,h2,h3{font-family:var(--serif);font-weight:700;line-height:1.15;margin:0}
+.eyebrow{font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;color:var(--red-ink);font-weight:600;margin:0 0 10px}
+
+/* nav */
+nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--rule)}
+nav .wrap{display:flex;align-items:center;gap:12px;height:60px}
+nav .brand{display:flex;align-items:center;gap:10px;font-family:var(--serif);font-weight:700;font-size:1.1rem;color:var(--ink);text-decoration:none}
+nav .brand img{width:32px;height:32px;border-radius:8px}
+nav .links{margin-left:auto;display:flex;gap:18px;font-size:.92rem}
+nav .links a{color:var(--muted);text-decoration:none}
+nav .links a:hover{color:var(--ink)}
+@media (max-width:560px){nav .links a:not(:last-child){display:none}}
+
+/* hero: ruled ledger paper */
+.hero{background:
+  linear-gradient(90deg,transparent 0 46px,color-mix(in srgb,var(--red-ink) 35%,transparent) 46px 47px,transparent 47px),
+  repeating-linear-gradient(var(--paper) 0 31px,var(--rule) 31px 32px);
+  border-bottom:1px solid var(--rule)}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;padding-top:56px;padding-bottom:56px}
+.hero h1{font-size:clamp(2.3rem,5.4vw,3.8rem)}
+.hero h1 .ur{display:block;font-family:"Noto Nastaliq Urdu",serif;font-weight:500;font-size:.62em;color:var(--red-ink);margin-top:14px;line-height:1.9}
+.hero p.lead{font-size:1.15rem;color:var(--muted);max-width:34em;margin:18px 0 26px}
+.cta{display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:10px;padding:12px 20px;border-radius:12px;font-weight:600;text-decoration:none;font-size:.98rem}
+.btn.primary{background:var(--red);color:#fff}
+.btn.ghost{border:1.5px solid var(--rule);color:var(--ink);background:var(--card)}
+.soon{font-size:.85rem;color:var(--muted);margin-top:14px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px;padding:0;list-style:none}
+.pills li{background:var(--card);border:1px solid var(--rule);border-radius:99px;padding:5px 12px;font-size:.85rem}
+.phones{position:relative;height:520px}
+.phones img{position:absolute;width:250px;border-radius:22px;box-shadow:0 24px 50px -18px rgba(40,20,0,.45)}
+.phones img:nth-child(1){right:150px;top:30px;transform:rotate(-6deg)}
+.phones img:nth-child(2){right:10px;top:0;transform:rotate(4deg)}
+@media (max-width:860px){
+  .hero{background:repeating-linear-gradient(var(--paper) 0 31px,var(--rule) 31px 32px)}
+  .hero .wrap{grid-template-columns:1fr;padding-top:36px}
+  .phones{height:400px;max-width:400px;margin:0 auto;width:100%}
+  .phones img{width:190px}
+  .phones img:nth-child(1){left:10px;right:auto}
+  .phones img:nth-child(2){right:10px}
+}
+
+section{padding:72px 0}
+.head{max-width:640px;margin-bottom:32px}
+.head h2{font-size:clamp(1.8rem,3.6vw,2.5rem)}
+.head p{color:var(--muted);margin:12px 0 0}
+
+/* video */
+.video{position:relative;aspect-ratio:16/9;border-radius:18px;overflow:hidden;background:#000;box-shadow:0 30px 60px -30px rgba(40,20,0,.5);cursor:pointer;border:0;padding:0;width:100%}
+.video img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+.video:hover img{transform:scale(1.02)}
+.video .play{position:absolute;right:22px;bottom:22px;width:76px;height:76px;border-radius:50%;background:var(--red);display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.video .play svg{width:34px;height:34px;margin-left:5px;fill:#fff}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+
+/* screenshots */
+.tabs{display:inline-flex;background:var(--paper-2);border:1px solid var(--rule);border-radius:12px;padding:4px;margin-bottom:22px}
+.tabs button{border:0;background:none;font:inherit;font-size:.92rem;padding:8px 16px;border-radius:9px;color:var(--muted);cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--card);color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.tabs button.ur{font-family:"Noto Nastaliq Urdu",serif;font-size:1rem;line-height:1.2;padding:4px 18px 10px}
+.shots{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;padding:4px 0 18px;scrollbar-width:thin}
+.shots img{flex:none;width:230px;border-radius:16px;scroll-snap-align:start;border:1px solid var(--rule);background:var(--paper-2)}
+@media (max-width:560px){.shots img{width:68vw}}
+.hint{font-size:.85rem;color:var(--muted);margin-top:4px}
+
+/* features */
+.features{background:var(--paper-2);border-top:1px solid var(--rule);border-bottom:1px solid var(--rule)}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:860px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.grid{grid-template-columns:1fr}}
+.f{background:var(--card);border:1px solid var(--rule);border-radius:16px;padding:22px}
+.f .ic{width:42px;height:42px;border-radius:11px;background:color-mix(in srgb,var(--red-ink) 12%,transparent);display:grid;place-items:center;margin-bottom:14px}
+.f .ic svg{width:22px;height:22px;stroke:var(--red-ink);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.f h3{font-size:1.2rem;margin-bottom:6px}
+.f p{margin:0;color:var(--muted);font-size:.96rem}
+
+/* privacy slate */
+.slate{background:var(--slate);color:var(--chalk)}
+.slate .head p{color:#c9c2b2}
+.slate .eyebrow{color:#f0b37e}
+.checks{display:grid;grid-template-columns:repeat(2,1fr);gap:14px 32px;padding:0;margin:0;list-style:none}
+@media (max-width:640px){.checks{grid-template-columns:1fr}}
+.checks li{display:flex;gap:12px;align-items:flex-start;font-size:1rem}
+.checks li svg{flex:none;width:22px;height:22px;stroke:#9fd8a8;fill:none;stroke-width:2.2;margin-top:2px}
+.slate a{color:#f0b37e}
+
+/* closing */
+.closing{text-align:center}
+.closing img{width:96px;height:96px;border-radius:24px;margin:0 auto 18px;box-shadow:0 14px 30px -12px rgba(40,20,0,.4)}
+.closing h2{font-size:clamp(1.8rem,3.6vw,2.4rem)}
+.closing p{color:var(--muted);max-width:32em;margin:12px auto 24px}
+.closing .cta{justify-content:center}
+footer{border-top:1px solid var(--rule);padding:28px 0;font-size:.9rem;color:var(--muted)}
+footer .wrap{display:flex;flex-wrap:wrap;gap:8px 20px;justify-content:space-between}
+footer a{color:var(--muted)}
+</style>
 </head>
 <body>
-<main>
-  <div class="hero">
-    <img src="apna-khata-icon.png" alt="Apna Khata icon">
-    <div>
-      <h1>Apna Khata</h1>
-      <p class="sub">Expense &amp; Udhaar · for Android</p>
+
+<nav><div class="wrap">
+  <a class="brand" href="#top"><img src="img/icon.png" alt="">Apna Khata</a>
+  <div class="links"><a href="#video">Video</a><a href="#screens">Screens</a><a href="#features">Features</a><a href="#privacy">Privacy</a></div>
+</div></nav>
+
+<header class="hero" id="top"><div class="wrap">
+  <div>
+    <p class="eyebrow">For Android · Version 2.2.2</p>
+    <h1>Your daily money book, in your pocket.<span class="ur" lang="ur" dir="rtl">اپنا کھاتہ: خرچہ اور ادھار</span></h1>
+    <p class="lead">Write down every expense, income and udhaar in a few taps. Always know how much cash is in your pocket and how much is in your bank or wallet.</p>
+    <div class="cta">
+      <a class="btn primary" href="#video"><svg width="18" height="18" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg>Watch the video</a>
+      <a class="btn ghost" href="#screens">See the app</a>
     </div>
+    <p class="soon">Coming soon on Google Play. Free, with ads.</p>
+    <ul class="pills"><li>Works offline</li><li>No account</li><li>English · Roman Urdu · اردو</li><li>Any currency</li></ul>
   </div>
-  <p>Apna Khata is a simple, private daily khata (ledger) for your money. Write down every expense, income and udhaar in a few taps, and always know how much cash is in your pocket and how much is in your bank or wallet.</p>
-  <div class="card">
-    <ul>
-      <li>Add an entry in seconds, with a built-in calculator in the amount box.</li>
-      <li>Separate balances for cash in hand and online (bank / wallet).</li>
-      <li>Udhaar ledgers with reminders, reports and backups.</li>
-      <li>Works offline. No account, no sign-up. Your records stay on your phone.</li>
-    </ul>
+  <div class="phones" aria-hidden="true">
+    <img src="img/en/03-bahi.webp" alt="" width="540" height="960">
+    <img src="img/en/01-home.webp" alt="" width="540" height="960">
   </div>
-  <p>Coming soon on Google Play.</p>
-  <p><a href="privacy.html">Privacy policy</a> · Contact: <a href="mailto:cybertech432@gmail.com">cybertech432@gmail.com</a></p>
-  <footer>Developer: Ikram Arshad</footer>
-</main>
+</div></header>
+
+<section id="video"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">See it in action</p>
+    <h2>What's new in 2.2.2</h2>
+    <p>Your language, your currency, and your backup restored on the very first screen.</p>
+  </div>
+  <button class="video" id="yt" aria-label="Play the Apna Khata video">
+    <img src="img/video.jpg" alt="Apna Khata 2.2.2 video" loading="lazy">
+    <span class="play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+  </button>
+  <p class="hint"><a href="https://www.youtube.com/watch?v=P8p9BI2lGts" target="_blank" rel="noopener">Open on YouTube</a></p>
+</div></section>
+
+<section id="screens" style="padding-top:24px"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Inside the app</p>
+    <h2>Five looks, one simple khata</h2>
+    <p>Choose a classic red bahi khata, a shop receipt, chalk on slate, or a clean daily page.</p>
+  </div>
+  <div class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-set="en">English</button>
+    <button role="tab" aria-selected="false" data-set="ur" class="ur" lang="ur">اردو</button>
+  </div>
+  <div class="shots" id="shots" tabindex="0" aria-label="App screenshots"></div>
+  <p class="hint">Swipe to see more.</p>
+</div></section>
+
+<section class="features" id="features"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Everything you need</p>
+    <h2>Simple enough for every day</h2>
+  </div>
+  <div class="grid">
+    <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></div><h3>Add in seconds</h3><p>Tap Expense, type the amount, save. The amount box is a calculator, so 120+45 just works.</p></div>
+    <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18M7 15h3"/></svg></div><h3>Cash and online</h3><p>Separate balances for cash in hand and bank or wallet, with transfers for ATM withdrawals and deposits.</p></div>
+    <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 4.5a3 3 0 0 1 0 6M21 20c0-2.6-1.6-4.8-4-5.6"/></svg></div><h3>Udhaar ledgers</h3><p>A running khata for each person: "I gave" and "I took". Settle up in one tap and share a statement on WhatsApp.</p></div>
+    <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg></div><h3>Reports and budgets</h3><p>Daily, monthly and custom reports, a 6-month chart, and budgets per category. Export to Excel or PDF.</p></div>
+    <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h10M4 19h7"/><path d="M17 15l2 2 3-4"/></svg></div><h3>Your language</h3><p>English, Roman Urdu or Urdu in Nastaliq, right to left. Pick your country and the currency is set for you.</p></div>
+    <div class="f"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"/></svg></div><h3>Backup and restore</h3><p>Save a backup to any folder you choose, and restore it on the very first screen of a new phone.</p></div>
+  </div>
+</div></section>
+
+<section class="slate" id="privacy"><div class="wrap">
+  <div class="head">
+    <p class="eyebrow">Private by design</p>
+    <h2>Your records stay on your phone</h2>
+    <p>Apna Khata has no servers and no account. We never see your entries.</p>
+  </div>
+  <ul class="checks">
+    <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Works fully offline</li>
+    <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>No sign-up, no login</li>
+    <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Optional app lock with your phone's own screen lock</li>
+    <li><svg viewBox="0 0 24 24"><path d="M5 12l5 5 9-10"/></svg>Backups go only to a folder you pick</li>
+  </ul>
+  <p style="margin-top:28px;color:#c9c2b2;font-size:.95rem">The app shows ads from Google AdMob. <a href="privacy.html">Read the privacy policy</a>.</p>
+</div></section>
+
+<section class="closing"><div class="wrap">
+  <img src="img/icon.png" alt="Apna Khata icon" width="256" height="256">
+  <h2>Coming soon on Google Play</h2>
+  <p>Apna Khata is in testing now. Questions or ideas? We'd love to hear from you.</p>
+  <div class="cta"><a class="btn primary" href="mailto:cybertech432@gmail.com">Email us</a><a class="btn ghost" href="privacy.html">Privacy policy</a></div>
+</div></section>
+
+<footer><div class="wrap">
+  <span>© 2026 Ikram Arshad · Developer of Apna Khata</span>
+  <span><a href="privacy.html">Privacy</a> · <a href="mailto:cybertech432@gmail.com">cybertech432@gmail.com</a></span>
+</div></footer>
+
+<script>
+const sets={
+  en:[["01-home","Home: cash, bank and today's spending"],["02-add","Add an expense"],["03-bahi","Red bahi khata look"],["04-raseed","Today's receipt slip"],["05-ledgers","Track who owes whom"],["06-reports","Monthly reports"],["07-takhti","Chalk-on-slate look"],["08-settle","Settle up and share"]],
+  ur:[["01-home","ہوم"],["02-add","خرچہ لکھیں"],["03-bahi","بہی کھاتہ"],["04-raseed","آج کی رسید"],["05-khate","کھاتے"],["06-report","رپورٹ"],["07-takhti","تختی"],["08-barabar","حساب برابر"]]
+};
+const box=document.getElementById('shots');
+function show(k){
+  box.innerHTML=sets[k].map(([f,a])=>`<img src="img/${k}/${f}.webp" alt="${a}" width="540" height="960" loading="lazy">`).join('');
+  box.scrollLeft=0;
+  document.querySelectorAll('.tabs button').forEach(b=>b.setAttribute('aria-selected',b.dataset.set===k));
+}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>show(b.dataset.set));
+show('en');
+document.getElementById('yt').addEventListener('click',function(){
+  this.innerHTML='<iframe src="https://www.youtube-nocookie.com/embed/P8p9BI2lGts?autoplay=1&rel=0" title="Apna Khata 2.2.2" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>';
+},{once:true});
+</script>
 </body>
 </html>
